@@ -1,4 +1,4 @@
-module snippetbox.macnigor.net
+module textvault
 
 go 1.25.10
 

@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"snippetbox.macnigor.net/internal/models"
-	"snippetbox.macnigor.net/ui"
+	"textvault/internal/models"
+	"textvault/ui"
 )
 
 type templateData struct {

@@ -16,7 +16,7 @@ import (
 	"github.com/go-playground/form/v4"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/joho/godotenv"
-	"snippetbox.macnigor.net/internal/models"
+	"textvault/internal/models"
 )
 
 type application struct {

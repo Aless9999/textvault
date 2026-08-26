@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"snippetbox.macnigor.net/internal/models"
-	"snippetbox.macnigor.net/internal/validator"
+	"textvault/internal/models"
+	"textvault/internal/validator"
 )
 
 type userLoginForm struct {

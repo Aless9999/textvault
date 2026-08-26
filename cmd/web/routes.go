@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/justinas/alice"
-	"snippetbox.macnigor.net/ui"
+	"textvault/ui"
 )
 
 func (app *application) routers() http.Handler {

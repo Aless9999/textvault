@@ -1,7 +1,7 @@
 package main
 
 import (
-	"snippetbox.macnigor.net/internal/assert"
+	"textvault/internal/assert"
 	"testing"
 	"time"
 )

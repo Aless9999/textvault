@@ -5,7 +5,7 @@ import (
 	"io"
 	"net/http"
 	"net/http/httptest"
-	"snippetbox.macnigor.net/internal/assert"
+	"textvault/internal/assert"
 	"testing"
 )
 
