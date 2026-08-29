@@ -1,4 +1,4 @@
-{{define "title"}}Create a New Snippet{{end}}
+{{define "title"}}Create a New Entries{{end}}
 {{define "main"}}
 <form action='/snippet/create' method='POST'>
 <!-- Include the CSRF token -->
@@ -27,7 +27,7 @@
 <input type='radio' name='expires' value='1' {{if (eq .Form.Expires 1)}}checked{{end}}> One Day
 </div>
 <div>
-<input type='submit' value='Publish snippet'>
+<input type='submit' value='Publish entries'>
 </div>
 </form>
 {{end}}

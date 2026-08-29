@@ -225,3 +225,18 @@ func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request
 func ping(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("OK"))
 }
+
+func (app *application) deletePost(w http.ResponseWriter, r *http.Request) {
+
+	id, err := strconv.Atoi(r.PathValue("id"))
+
+	if err != nil {
+		return
+	}
+	err = app.snippets.Delete(id)
+	if err != nil {
+		app.serverError(w, r, err)
+	}
+	app.sessionManager.Put(r.Context(), "flash", "Entries successfully remove")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+}

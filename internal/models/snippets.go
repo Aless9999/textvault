@@ -94,3 +94,22 @@ func (m *SnippetModel) Latest() ([]Snippet, error) {
 	return snippets, err
 
 }
+
+func (m *SnippetModel) Delete(id int) error {
+	stmt := `DELETE FROM snippets WHERE id = $1`
+
+	result, err := m.DB.Exec(stmt, id)
+
+	if err != nil {
+		return err
+	}
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rows == 0 {
+		return errors.New("entries not found")
+	}
+	return nil
+}

@@ -1,17 +1,35 @@
 {{define "title"}}Snippet #{{.Snippet.ID}}{{end}}
+
 {{define "main"}}
 {{with .Snippet}}
 <div class='snippet'>
-<div class='metadata'>
-<strong>{{.Title}}</strong>
-<span>#{{.ID}}</span>
-</div>
-<pre><code>{{.Content}}</code></pre>
-<div class='metadata'>
-<!-- Use the new template function here -->
-<time>Created: {{humanDate .Created}}</time>
-<time>Expires: {{humanDate .Expires}}</time>
-</div>
+    <div class='metadata'>
+        <strong>{{.Title}}</strong>
+        <span>#{{.ID}}</span>
+    </div>
+
+    <pre><code>{{.Content}}</code></pre>
+
+    <div class='metadata'>
+        <time>Created: {{humanDate .Created}}</time>
+        <time>Expires: {{humanDate .Expires}}</time>
+    </div>
+
+    {{if $.IsAuthenticated}}
+    <form action='/snippet/delete/{{.ID}}' method='POST' class='delete-form'>
+        <input type='hidden' name='csrf_token' value='{{$.CSRFToken}}'>
+        <button type='submit'>Delete</button>
+    </form>
+    {{end}}
 </div>
 {{end}}
+
+<!-- Модальное окно должно быть внутри main -->
+<dialog id="delete-dialog">
+    <form method="dialog">
+        <p>Точно хотите удалить эту запись?</p>
+        <button type="button" id="dialog-cancel-btn">Cancel</button>
+        <button type="button" id="dialog-confirm-btn">OK</button>
+    </form>
+</dialog>
 {{end}}
