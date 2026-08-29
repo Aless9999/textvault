@@ -183,6 +183,8 @@ func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
 	data.Form = snippetCreateForm{
 		Expires: 365,
 	}
+
+	data.FormAction = "/snippet/create"
 	app.render(w, r, http.StatusOK, "create.tmpl", data)
 }
 
@@ -239,4 +241,76 @@ func (app *application) deletePost(w http.ResponseWriter, r *http.Request) {
 	}
 	app.sessionManager.Put(r.Context(), "flash", "Entries successfully remove")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+}
+
+func (app *application) snippetEditUpdate(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		return
+	}
+	var form snippetCreateForm
+
+	err = app.decodePostForm(r, &form)
+
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+
+	}
+
+	form.CheckField(validator.NotBlank(form.Title), "title", "This field cannot be blank")
+	form.CheckField(validator.MaxChars(form.Title, 100), "title", "This field not more 100 tokens")
+	form.CheckField(validator.NotBlank(form.Content), "content", "This field cannot be blank")
+	form.CheckField(validator.PermittedValue(form.Expires, 1, 7, 365), "expires", "This field must equals 1, 7 or 365")
+
+	if !form.Valid() {
+		data := app.newTemplateData(r)
+		data.Form = form
+
+		app.render(w, r, http.StatusUnprocessableEntity, "create.tmpl", data)
+		return
+	}
+
+	err = app.snippets.Update(id,
+		form.Title,
+		form.Content,
+		form.Expires)
+
+	if err != nil {
+		app.serverError(w, r, err)
+		return
+	}
+
+	app.sessionManager.Put(r.Context(), "flash", "Entries update!")
+
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view/%d", id), http.StatusSeeOther)
+
+}
+
+func (app *application) snippetEdit(w http.ResponseWriter, r *http.Request) {
+	id, err := strconv.Atoi(r.PathValue("id"))
+	if err != nil {
+		return
+	}
+
+	snippet, err := app.snippets.Get(id)
+	if err != nil {
+		if errors.Is(err, models.ErrNoRecord) {
+			http.NotFound(w, r)
+		} else {
+			app.serverError(w, r, err)
+		}
+		return
+	}
+
+	data := app.newTemplateData(r)
+	data.Form = snippetCreateForm{
+
+		Title:   snippet.Title,
+		Content: snippet.Content,
+		Expires: 365,
+	}
+	data.FormAction = fmt.Sprintf("/snippet/edit/%d", id)
+	app.render(w, r, http.StatusOK, "create.tmpl", data)
 }

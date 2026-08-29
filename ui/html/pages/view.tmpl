@@ -16,20 +16,24 @@
     </div>
 
     {{if $.IsAuthenticated}}
-    <form action='/snippet/delete/{{.ID}}' method='POST' class='delete-form'>
-        <input type='hidden' name='csrf_token' value='{{$.CSRFToken}}'>
-        <button type='submit'>Delete</button>
-    </form>
+    <div class='actions'>
+
+        <form action='/snippet/delete/{{.ID}}' method='POST' class='delete-form'>
+            <input type='hidden' name='csrf_token' value='{{$.CSRFToken}}'>
+            <button type='submit' class='delete-button'>Delete</button>
+        </form>
+
+        <a href='/snippet/edit/{{.ID}}' class='update-button'>Update</a>
+
+    </div>
+
+    <dialog id='delete-dialog'>
+        <p>Точно хотите удалить эту запись?</p>
+
+        <button type='button' id='dialog-cancel-btn'>Отмена</button>
+        <button type='button' id='dialog-confirm-btn'>Удалить</button>
+    </dialog>
     {{end}}
 </div>
 {{end}}
-
-<!-- Модальное окно должно быть внутри main -->
-<dialog id="delete-dialog">
-    <form method="dialog">
-        <p>Точно хотите удалить эту запись?</p>
-        <button type="button" id="dialog-cancel-btn">Cancel</button>
-        <button type="button" id="dialog-confirm-btn">OK</button>
-    </form>
-</dialog>
 {{end}}

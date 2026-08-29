@@ -113,3 +113,26 @@ func (m *SnippetModel) Delete(id int) error {
 	}
 	return nil
 }
+func (m *SnippetModel) Update(id int, title, content string, expires int) error {
+
+	stmt := `
+		UPDATE snippets
+		SET title = $1,
+		    content = $2,
+		    expires = (CURRENT_TIMESTAMP AT TIME ZONE 'UTC') + ($3 * INTERVAL '1 day')
+		WHERE id = $4`
+
+	result, err := m.DB.Exec(stmt, title, content, expires, id)
+
+	if err != nil {
+		return err
+	}
+	rows, err := result.RowsAffected()
+	if err != nil {
+		return err
+	}
+	if rows == 0 {
+		return errors.New("entries not update")
+	}
+	return nil
+}

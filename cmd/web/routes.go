@@ -3,8 +3,9 @@ package main
 import (
 	"net/http"
 
-	"github.com/justinas/alice"
 	"textvault/ui"
+
+	"github.com/justinas/alice"
 )
 
 func (app *application) routers() http.Handler {
@@ -21,6 +22,8 @@ func (app *application) routers() http.Handler {
 
 	mux.Handle("GET /snippet/create", protected.ThenFunc((app.snippetCreate)))
 	mux.Handle("POST /snippet/create", protected.ThenFunc(app.snippetCreatePost))
+	mux.Handle("POST /snippet/edit/{id}", protected.ThenFunc(app.snippetEditUpdate))
+	mux.Handle("GET /snippet/edit/{id}", protected.ThenFunc(app.snippetEdit))
 	mux.Handle("POST /snippet/delete/{id}", protected.ThenFunc(app.deletePost))
 
 	// добавляем новые роуты
